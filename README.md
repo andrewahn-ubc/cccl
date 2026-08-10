@@ -33,6 +33,8 @@ Time limits include headroom for Narval's shared-filesystem I/O: setup 3 hours, 
 
 `RECAP_ARROW_MODULE` defaults to the site's default compatible Arrow module; override it with a version reported by `module spider arrow` only when necessary. Alliance provides PyArrow through that module and intentionally blocks wheelhouse installation without it. `RECAP_CUDA_MODULE` is optional and should be set only if the current Narval PyTorch wheel requires a site CUDA module. Check `module spider cuda` rather than copying the example version blindly. Set `RECAP_SKIP_GPU_CALIBRATION=1` if the account cannot request GPUs.
 
+The setup job checks all compiled scientific-Python imports and runs a real three-update MNIST training/checkpoint smoke test. The full unit-test suite is intentionally not repeated on Narval for every submission; set `RECAP_RUN_CLUSTER_TESTS=1` to opt in. Compute jobs put temporary files, bytecode, and XDG caches on node-local `$SLURM_TMPDIR` rather than the shared filesystem.
+
 ### Recovering from a home-quota failure
 
 An older launcher could make `virtualenv` build pip/setuptools seed images in `$HOME`. If that attempt already filled the quota, inspect it before rerunning:
@@ -58,9 +60,9 @@ Set `RECAP_ALLOW_INDEX=1` only on systems without the Alliance wheelhouse; this 
 The dependency graph is:
 
 ```text
-setup/tests ─ CPU calibration ─┬─ A[24] ─ A aggregate ─┐
+setup/smoke ─ CPU calibration ─┬─ A[24] ─ A aggregate ─┐
                               └─ B[8]  ─ B aggregate ─┴─ conditional A/B diagnostic ─ resolve width
-setup/tests ─ GPU calibration (timing only)                       │
+setup/smoke ─ GPU calibration (timing only)                       │
                                                                  ▼
                     shared ER checkpoints[3] ─ C[2] ─ C aggregate
                                                         │
