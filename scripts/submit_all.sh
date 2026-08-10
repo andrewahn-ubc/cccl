@@ -2,15 +2,21 @@
 set -euo pipefail
 
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
-VENV=${RECAP_VENV:-"$ROOT/.venv"}
 if [[ -z "${SCRATCH:-}" ]]; then
   echo "SCRATCH is not set; run this on a Narval login node." >&2
   exit 2
 fi
+VENV=${RECAP_VENV:-"$SCRATCH/recap_pilots_venv_py311"}
+CACHE_ROOT=${RECAP_CACHE_ROOT:-"$SCRATCH/recap_pilots_cache"}
 DATA_ROOT=${RECAP_DATA_ROOT:-"$SCRATCH/recap_mnist"}
 ACCOUNT=${RECAP_ACCOUNT:-${SLURM_ACCOUNT:-}}
+export RECAP_CACHE_ROOT="$CACHE_ROOT"
 cd "$ROOT"
-mkdir -p "$ROOT/logs" "$ROOT/results/pilots" "$DATA_ROOT"
+if ! mkdir -p "$ROOT/logs" "$ROOT/results/pilots" "$DATA_ROOT" "$CACHE_ROOT"; then
+  echo "Unable to create launch directories. Your current filesystem quota may still be exhausted." >&2
+  echo "Run diskusage_report and inspect ~/.local/share/virtualenv and ~/.cache before retrying." >&2
+  exit 2
+fi
 
 "$ROOT/scripts/bootstrap_env.sh" "$ROOT" "$VENV"
 source "$VENV/bin/activate"

@@ -9,24 +9,46 @@ Before the launch, verify the configurable module/resource defaults against the 
 On a Narval login node:
 
 ```bash
+cd "$PROJECT"
 git clone <YOUR-REPOSITORY-URL> recap
 cd recap
 RECAP_ACCOUNT=def-youraccount bash scripts/submit_all.sh
 ```
 
-That command performs login-safe setup only: it creates a virtual environment from the Alliance wheelhouse, generates deterministic manifests/task libraries, and downloads MNIST once into `$SCRATCH/recap_mnist`. It then submits all training, aggregation, and reporting jobs. It never trains on the login node.
+That command performs login-safe setup only: it creates the virtual environment at `$SCRATCH/recap_pilots_venv_py311`, puts virtualenv/pip/temp caches under `$SCRATCH/recap_pilots_cache`, generates deterministic manifests/task libraries, and downloads MNIST once into `$SCRATCH/recap_mnist`. It then submits all training, aggregation, and reporting jobs. It never trains on the login node. Keeping these high-file-count paths off `$HOME` avoids Alliance home quota failures.
 
 If your Slurm association has a working default account, `RECAP_ACCOUNT` may be omitted. Useful overrides are:
 
 ```bash
 RECAP_PYTHON_MODULE=3.11 \
-RECAP_VENV="$PROJECT/recap/venv" \
+RECAP_VENV="$SCRATCH/recap_pilots_venv_py311" \
+RECAP_CACHE_ROOT="$SCRATCH/recap_pilots_cache" \
 RECAP_DATA_ROOT="$SCRATCH/recap_mnist" \
 RECAP_CUDA_MODULE=cuda/12.2 \
 bash scripts/submit_all.sh
 ```
 
 `RECAP_CUDA_MODULE` is optional and should be set only if the current Narval PyTorch wheel requires a site CUDA module. Check `module spider cuda` rather than copying the example version blindly. Set `RECAP_SKIP_GPU_CALIBRATION=1` if the account cannot request GPUs.
+
+### Recovering from a home-quota failure
+
+An older launcher could make `virtualenv` build pip/setuptools seed images in `$HOME`. If that attempt already filled the quota, inspect it before rerunning:
+
+```bash
+diskusage_report
+du -sh ~/.local/share/virtualenv ~/.cache/pip ~/.cache/virtualenv 2>/dev/null
+```
+
+Those directories contain regenerable installer caches, not the project environment. After confirming the paths, the safest recovery is to move them to scratch:
+
+```bash
+mkdir -p "$SCRATCH/recap_quota_recovery"
+test ! -e ~/.local/share/virtualenv || mv ~/.local/share/virtualenv "$SCRATCH/recap_quota_recovery/virtualenv-app-data"
+test ! -e ~/.cache/pip || mv ~/.cache/pip "$SCRATCH/recap_quota_recovery/pip-cache"
+test ! -e ~/.cache/virtualenv || mv ~/.cache/virtualenv "$SCRATCH/recap_quota_recovery/virtualenv-cache"
+```
+
+Then pull this fix and rerun the same `RECAP_ACCOUNT=... bash scripts/submit_all.sh` command. A partial old `recap/.venv` is no longer used because the default environment now lives on scratch.
 
 Set `RECAP_ALLOW_INDEX=1` only on systems without the Alliance wheelhouse; this allows ordinary package-index installation. Module versions and the account remain configuration, never hard-coded scientific inputs.
 
