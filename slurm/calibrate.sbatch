@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=recap_calibrate
-#SBATCH --time=01:00:00
+#SBATCH --time=01:30:00
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=8G
 #SBATCH --output=logs/%x_%j.out

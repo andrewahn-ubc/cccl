@@ -29,7 +29,7 @@ RECAP_CUDA_MODULE=cuda/12.2 \
 bash scripts/submit_all.sh
 ```
 
-Time limits include headroom for Narval's shared-filesystem I/O: setup 2 hours, calibration 1 hour, each training array element 6 hours, aggregation 2 hours, manifest resolution 30 minutes, and reporting 1 hour. Override a class with `RECAP_SETUP_TIME_LIMIT`, `RECAP_CALIBRATE_TIME_LIMIT`, `RECAP_RUN_TIME_LIMIT`, `RECAP_AGGREGATE_TIME_LIMIT`, `RECAP_RESOLVE_TIME_LIMIT`, or `RECAP_REPORT_TIME_LIMIT`. `RECAP_TIME_LIMIT` remains an optional global override.
+Time limits include headroom for Narval's shared-filesystem I/O: setup 3 hours, calibration 1.5 hours, each training array element 9 hours, aggregation 3 hours, manifest resolution 45 minutes, and reporting 1.5 hours. Override a class with `RECAP_SETUP_TIME_LIMIT`, `RECAP_CALIBRATE_TIME_LIMIT`, `RECAP_RUN_TIME_LIMIT`, `RECAP_AGGREGATE_TIME_LIMIT`, `RECAP_RESOLVE_TIME_LIMIT`, or `RECAP_REPORT_TIME_LIMIT`. `RECAP_TIME_LIMIT` remains an optional global override.
 
 `RECAP_ARROW_MODULE` defaults to the site's default compatible Arrow module; override it with a version reported by `module spider arrow` only when necessary. Alliance provides PyArrow through that module and intentionally blocks wheelhouse installation without it. `RECAP_CUDA_MODULE` is optional and should be set only if the current Narval PyTorch wheel requires a site CUDA module. Check `module spider cuda` rather than copying the example version blindly. Set `RECAP_SKIP_GPU_CALIBRATION=1` if the account cannot request GPUs.
 

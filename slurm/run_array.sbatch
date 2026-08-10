@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=recap_run
-#SBATCH --time=06:00:00
+#SBATCH --time=09:00:00
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=12G
 #SBATCH --requeue
