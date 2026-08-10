@@ -10,6 +10,7 @@ VENV=${RECAP_VENV:-"$SCRATCH/recap_pilots_venv_py311"}
 CACHE_ROOT=${RECAP_CACHE_ROOT:-"$SCRATCH/recap_pilots_cache"}
 DATA_ROOT=${RECAP_DATA_ROOT:-"$SCRATCH/recap_mnist"}
 ACCOUNT=${RECAP_ACCOUNT:-${SLURM_ACCOUNT:-}}
+TIME_LIMIT=${RECAP_TIME_LIMIT:-12:00:00}
 export RECAP_CACHE_ROOT="$CACHE_ROOT"
 cd "$ROOT"
 if ! mkdir -p "$ROOT/logs" "$ROOT/results/pilots" "$DATA_ROOT" "$CACHE_ROOT"; then
@@ -37,7 +38,7 @@ else
 fi
 
 submit() {
-  sbatch --parsable "${account_args[@]}" "$@" | cut -d';' -f1
+  sbatch --parsable "${account_args[@]}" --time="$TIME_LIMIT" "$@" | cut -d';' -f1
 }
 
 setup=$(submit "$ROOT/slurm/setup.sbatch" "$ROOT" "$VENV" "$DATA_ROOT")

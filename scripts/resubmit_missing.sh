@@ -6,6 +6,7 @@ ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 DATA_ROOT=${RECAP_DATA_ROOT:-"${SCRATCH:?SCRATCH must be set}/recap_mnist"}
 VENV=${RECAP_VENV:-"$SCRATCH/recap_pilots_venv_py311"}
 ACCOUNT=${RECAP_ACCOUNT:-${SLURM_ACCOUNT:-}}
+TIME_LIMIT=${RECAP_TIME_LIMIT:-12:00:00}
 source "$ROOT/scripts/load_modules.sh"
 source "$VENV/bin/activate"
 indices=$(python -m src.missing --pilot "$PILOT")
@@ -15,5 +16,5 @@ if [[ -z "$indices" ]]; then
 fi
 account_args=()
 if [[ -n "$ACCOUNT" ]]; then account_args=(--account="$ACCOUNT"); fi
-job=$(sbatch --parsable "${account_args[@]}" --array="$indices%12" --job-name="recap_${PILOT}_retry" "$ROOT/slurm/run_array.sbatch" "$ROOT" "$VENV" "$DATA_ROOT" "$PILOT" | cut -d';' -f1)
+job=$(sbatch --parsable "${account_args[@]}" --time="$TIME_LIMIT" --array="$indices%12" --job-name="recap_${PILOT}_retry" "$ROOT/slurm/run_array.sbatch" "$ROOT" "$VENV" "$DATA_ROOT" "$PILOT" | cut -d';' -f1)
 echo "Resubmitted Pilot $PILOT rows $indices as job $job (identical configs)."

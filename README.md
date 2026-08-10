@@ -25,11 +25,12 @@ RECAP_ARROW_MODULE=arrow \
 RECAP_VENV="$SCRATCH/recap_pilots_venv_py311" \
 RECAP_CACHE_ROOT="$SCRATCH/recap_pilots_cache" \
 RECAP_DATA_ROOT="$SCRATCH/recap_mnist" \
+RECAP_TIME_LIMIT=12:00:00 \
 RECAP_CUDA_MODULE=cuda/12.2 \
 bash scripts/submit_all.sh
 ```
 
-`RECAP_ARROW_MODULE` defaults to the site's default compatible Arrow module; override it with a version reported by `module spider arrow` only when necessary. Alliance provides PyArrow through that module and intentionally blocks wheelhouse installation without it. `RECAP_CUDA_MODULE` is optional and should be set only if the current Narval PyTorch wheel requires a site CUDA module. Check `module spider cuda` rather than copying the example version blindly. Set `RECAP_SKIP_GPU_CALIBRATION=1` if the account cannot request GPUs.
+Every job defaults to a 12-hour Slurm time limit to tolerate slow shared-filesystem I/O. `RECAP_TIME_LIMIT` overrides it uniformly for initial submissions and software-failure resubmissions. `RECAP_ARROW_MODULE` defaults to the site's default compatible Arrow module; override it with a version reported by `module spider arrow` only when necessary. Alliance provides PyArrow through that module and intentionally blocks wheelhouse installation without it. `RECAP_CUDA_MODULE` is optional and should be set only if the current Narval PyTorch wheel requires a site CUDA module. Check `module spider cuda` rather than copying the example version blindly. Set `RECAP_SKIP_GPU_CALIBRATION=1` if the account cannot request GPUs.
 
 ### Recovering from a home-quota failure
 
