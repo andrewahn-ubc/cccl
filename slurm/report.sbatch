@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=recap_report
-#SBATCH --time=12:00:00
+#SBATCH --time=01:00:00
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=4G
 #SBATCH --output=logs/%x_%j.out

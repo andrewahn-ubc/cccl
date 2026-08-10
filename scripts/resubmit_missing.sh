@@ -6,7 +6,7 @@ ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 DATA_ROOT=${RECAP_DATA_ROOT:-"${SCRATCH:?SCRATCH must be set}/recap_mnist"}
 VENV=${RECAP_VENV:-"$SCRATCH/recap_pilots_venv_py311"}
 ACCOUNT=${RECAP_ACCOUNT:-${SLURM_ACCOUNT:-}}
-TIME_LIMIT=${RECAP_TIME_LIMIT:-12:00:00}
+TIME_LIMIT=${RECAP_TIME_LIMIT:-${RECAP_RUN_TIME_LIMIT:-06:00:00}}
 source "$ROOT/scripts/load_modules.sh"
 source "$VENV/bin/activate"
 indices=$(python -m src.missing --pilot "$PILOT")
