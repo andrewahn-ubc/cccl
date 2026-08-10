@@ -25,15 +25,14 @@ RECAP_ARROW_MODULE=arrow \
 RECAP_VENV="$SCRATCH/recap_pilots_venv_py311" \
 RECAP_CACHE_ROOT="$SCRATCH/recap_pilots_cache" \
 RECAP_DATA_ROOT="$SCRATCH/recap_mnist" \
-RECAP_CUDA_MODULE=cuda/12.2 \
 bash scripts/submit_all.sh
 ```
 
-Time limits include headroom for Narval's shared-filesystem I/O: setup 3 hours, calibration 1.5 hours, each training array element 9 hours, aggregation 3 hours, manifest resolution 45 minutes, and reporting 1.5 hours. Override a class with `RECAP_SETUP_TIME_LIMIT`, `RECAP_CALIBRATE_TIME_LIMIT`, `RECAP_RUN_TIME_LIMIT`, `RECAP_AGGREGATE_TIME_LIMIT`, `RECAP_RESOLVE_TIME_LIMIT`, or `RECAP_REPORT_TIME_LIMIT`. `RECAP_TIME_LIMIT` remains an optional global override.
+Time limits include headroom for Narval's shared-filesystem I/O: each training array element 9 hours, aggregation 3 hours, manifest resolution 45 minutes, and reporting 1.5 hours. Override a class with `RECAP_RUN_TIME_LIMIT`, `RECAP_AGGREGATE_TIME_LIMIT`, `RECAP_RESOLVE_TIME_LIMIT`, or `RECAP_REPORT_TIME_LIMIT`. `RECAP_TIME_LIMIT` remains an optional global override.
 
-`RECAP_ARROW_MODULE` defaults to the site's default compatible Arrow module; override it with a version reported by `module spider arrow` only when necessary. Alliance provides PyArrow through that module and intentionally blocks wheelhouse installation without it. `RECAP_CUDA_MODULE` is optional and should be set only if the current Narval PyTorch wheel requires a site CUDA module. Check `module spider cuda` rather than copying the example version blindly. Set `RECAP_SKIP_GPU_CALIBRATION=1` if the account cannot request GPUs.
+`RECAP_ARROW_MODULE` defaults to the site's default compatible Arrow module; override it with a version reported by `module spider arrow` only when necessary. Alliance provides PyArrow through that module and intentionally blocks wheelhouse installation without it.
 
-The setup job checks all compiled scientific-Python imports and runs a real three-update MNIST training/checkpoint smoke test. The full unit-test suite is intentionally not repeated on Narval for every submission; set `RECAP_RUN_CLUSTER_TESTS=1` to opt in. Compute jobs put temporary files, bytecode, and XDG caches on node-local `$SLURM_TMPDIR` rather than the shared filesystem.
+The launcher submits no unit tests, pytest suites, smoke tests, setup jobs, or timing calibrations. Development tests remain available for maintainers but are not installed or invoked by `scripts/submit_all.sh`. Every submitted job either runs a manifest row, aggregates pilot evidence, resolves a data-dependent manifest, or writes the final report. Compute jobs put temporary files, bytecode, and XDG caches on node-local `$SLURM_TMPDIR` rather than the shared filesystem.
 
 ### Recovering from a home-quota failure
 
@@ -60,9 +59,9 @@ Set `RECAP_ALLOW_INDEX=1` only on systems without the Alliance wheelhouse; this 
 The dependency graph is:
 
 ```text
-setup/smoke ─ CPU calibration ─┬─ A[24] ─ A aggregate ─┐
-                              └─ B[8]  ─ B aggregate ─┴─ conditional A/B diagnostic ─ resolve width
-setup/smoke ─ GPU calibration (timing only)                       │
+A[24] ─ A aggregate ─┐
+B[8]  ─ B aggregate ─┴─ conditional A/B diagnostic ─ resolve width
+                                                                 │
                                                                  ▼
                     shared ER checkpoints[3] ─ C[2] ─ C aggregate
                                                         │
@@ -109,5 +108,5 @@ The tests cover transition/occupancy math, masks and Taylor-score purity, functi
 - The first ten blocks contain a seed-fixed permutation of all ten tasks; the remaining blocks use the exact `.30,.30,.10,.10,.10,.02×5` generator.
 - Online updates keep the total optimization batch at 64 (current/replay split 32/32 once replay exists). Offline uses 64 mixture examples.
 - The common replay policy reserves 50 slots per task. Pilot B’s oracle policy dynamically applies largest-remainder quotas with a five-example minimum for observed tasks.
-- CPU is the default for MNIST arrays. CPU and GPU calibrations are both submitted, but GPU queue latency cannot stall the scientific DAG.
+- MNIST arrays run on CPU; no timing-calibration or GPU-smoke jobs are submitted.
 - All gates use the frozen thresholds in the protocol; aggregators never tune thresholds from observed results.

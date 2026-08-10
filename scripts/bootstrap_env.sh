@@ -46,9 +46,9 @@ fi
 
 source "$VENV/bin/activate"
 if [[ -n "${RECAP_ALLOW_INDEX:-}" ]]; then
-  python -m pip install "$ROOT[test]"
+  python -m pip install "$ROOT"
 else
-  python -m pip install --no-index "$ROOT[test]"
+  python -m pip install --no-index "$ROOT"
 fi
 
 python -c 'import pyarrow; print("PyArrow:", pyarrow.__version__)'

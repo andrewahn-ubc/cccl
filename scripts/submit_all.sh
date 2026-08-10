@@ -10,8 +10,6 @@ VENV=${RECAP_VENV:-"$SCRATCH/recap_pilots_venv_py311"}
 CACHE_ROOT=${RECAP_CACHE_ROOT:-"$SCRATCH/recap_pilots_cache"}
 DATA_ROOT=${RECAP_DATA_ROOT:-"$SCRATCH/recap_mnist"}
 ACCOUNT=${RECAP_ACCOUNT:-${SLURM_ACCOUNT:-}}
-SETUP_TIME_LIMIT=${RECAP_TIME_LIMIT:-${RECAP_SETUP_TIME_LIMIT:-03:00:00}}
-CALIBRATE_TIME_LIMIT=${RECAP_TIME_LIMIT:-${RECAP_CALIBRATE_TIME_LIMIT:-01:30:00}}
 RUN_TIME_LIMIT=${RECAP_TIME_LIMIT:-${RECAP_RUN_TIME_LIMIT:-09:00:00}}
 AGGREGATE_TIME_LIMIT=${RECAP_TIME_LIMIT:-${RECAP_AGGREGATE_TIME_LIMIT:-03:00:00}}
 RESOLVE_TIME_LIMIT=${RECAP_TIME_LIMIT:-${RECAP_RESOLVE_TIME_LIMIT:-00:45:00}}
@@ -48,16 +46,8 @@ submit() {
   sbatch --parsable "${account_args[@]}" --time="$time_limit" "$@" | cut -d';' -f1
 }
 
-setup=$(submit "$SETUP_TIME_LIMIT" "$ROOT/slurm/setup.sbatch" "$ROOT" "$VENV" "$DATA_ROOT")
-cpu_cal=$(submit "$CALIBRATE_TIME_LIMIT" --dependency="afterok:$setup" "$ROOT/slurm/calibrate.sbatch" "$ROOT" "$VENV" "$DATA_ROOT" cpu)
-if [[ "${RECAP_SKIP_GPU_CALIBRATION:-0}" == "1" ]]; then
-  gpu_cal="skipped"
-else
-  gpu_cal=$(submit "$CALIBRATE_TIME_LIMIT" --dependency="afterok:$setup" --gres=gpu:1 "$ROOT/slurm/calibrate.sbatch" "$ROOT" "$VENV" "$DATA_ROOT" cuda)
-fi
-
-a=$(submit "$RUN_TIME_LIMIT" --dependency="afterok:$cpu_cal" --array=0-23%12 --job-name=recap_A "$ROOT/slurm/run_array.sbatch" "$ROOT" "$VENV" "$DATA_ROOT" A)
-b=$(submit "$RUN_TIME_LIMIT" --dependency="afterok:$cpu_cal" --array=0-7%8 --job-name=recap_B "$ROOT/slurm/run_array.sbatch" "$ROOT" "$VENV" "$DATA_ROOT" B)
+a=$(submit "$RUN_TIME_LIMIT" --array=0-23%12 --job-name=recap_A "$ROOT/slurm/run_array.sbatch" "$ROOT" "$VENV" "$DATA_ROOT" A)
+b=$(submit "$RUN_TIME_LIMIT" --array=0-7%8 --job-name=recap_B "$ROOT/slurm/run_array.sbatch" "$ROOT" "$VENV" "$DATA_ROOT" B)
 a_agg=$(submit "$AGGREGATE_TIME_LIMIT" --dependency="afterok:$a" --job-name=recap_A_agg "$ROOT/slurm/aggregate.sbatch" "$ROOT" "$VENV" A)
 b_agg=$(submit "$AGGREGATE_TIME_LIMIT" --dependency="afterok:$b" --job-name=recap_B_agg "$ROOT/slurm/aggregate.sbatch" "$ROOT" "$VENV" B)
 a_retry=$(submit "$RUN_TIME_LIMIT" --dependency="afterok:$a_agg" --array=0 --job-name=recap_A_retry "$ROOT/slurm/run_array.sbatch" "$ROOT" "$VENV" "$DATA_ROOT" AR)
@@ -78,9 +68,9 @@ e=$(submit "$RUN_TIME_LIMIT" --dependency="afterok:$resolve_e" --array=0-11%12 -
 e_agg=$(submit "$AGGREGATE_TIME_LIMIT" --dependency="afterok:$e" --job-name=recap_E_agg "$ROOT/slurm/aggregate.sbatch" "$ROOT" "$VENV" E)
 report=$(submit "$REPORT_TIME_LIMIT" --dependency="afterok:$e_agg" "$ROOT/slurm/report.sbatch" "$ROOT" "$VENV")
 
-python - "$ROOT/results/pilots/submission.json" "$setup" "$cpu_cal" "$gpu_cal" "$a" "$b" "$a_agg" "$b_agg" "$a_retry" "$b_retry" "$a_final" "$b_final" "$resolve" "$prep" "$c" "$c_agg" "$d" "$d_agg" "$d_retry" "$d_final" "$resolve_e" "$e" "$e_agg" "$report" <<'PY'
+python - "$ROOT/results/pilots/submission.json" "$a" "$b" "$a_agg" "$b_agg" "$a_retry" "$b_retry" "$a_final" "$b_final" "$resolve" "$prep" "$c" "$c_agg" "$d" "$d_agg" "$d_retry" "$d_final" "$resolve_e" "$e" "$e_agg" "$report" <<'PY'
 import json, sys
-keys = ["setup", "cpu_calibration", "gpu_calibration", "A", "B", "A_aggregate", "B_aggregate", "A_retry", "B_retry", "A_finalize", "B_finalize", "resolve", "checkpoint_prep", "C", "C_aggregate", "D", "D_aggregate", "D_retry", "D_finalize", "resolve_E", "E", "E_aggregate", "report"]
+keys = ["A", "B", "A_aggregate", "B_aggregate", "A_retry", "B_retry", "A_finalize", "B_finalize", "resolve", "checkpoint_prep", "C", "C_aggregate", "D", "D_aggregate", "D_retry", "D_finalize", "resolve_E", "E", "E_aggregate", "report"]
 with open(sys.argv[1], "w") as handle:
     json.dump(dict(zip(keys, sys.argv[2:])), handle, indent=2)
     handle.write("\n")
