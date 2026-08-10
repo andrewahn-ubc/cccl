@@ -9,6 +9,7 @@ set -euo pipefail
 ROOT=${1:?root required}
 VENV=${2:?venv required}
 COMMAND=${3:-resolve}
+source "$ROOT/scripts/load_modules.sh"
 source "$VENV/bin/activate"
 export RECAP_ROOT="$ROOT"
 cd "$ROOT"

@@ -3,7 +3,6 @@ set -euo pipefail
 
 ROOT=${1:?project root required}
 VENV=${2:?venv path required}
-PYTHON_MODULE=${RECAP_PYTHON_MODULE:-3.11}
 SCRATCH_ROOT=${SCRATCH:?SCRATCH must be set on Narval}
 CACHE_ROOT=${RECAP_CACHE_ROOT:-"$SCRATCH_ROOT/recap_pilots_cache"}
 
@@ -25,11 +24,9 @@ mkdir -p \
   "$TMPDIR" \
   "$(dirname "$VENV")"
 
-if type module >/dev/null 2>&1; then
-  # Narval's CCconfig/StdEnv stack is sticky; purging it only prints a scary but
-  # harmless warning. Loading Python directly retains the supported site stack.
-  module load "python/${PYTHON_MODULE}"
-fi
+# This must happen before venv activation: Narval deliberately supplies PyArrow
+# via its Arrow module rather than a pip-installable wheel.
+source "$ROOT/scripts/load_modules.sh"
 
 # A quota failure can leave an executable-looking but unusable environment.
 # Preserve it for inspection and recreate cleanly instead of blindly sourcing it.
@@ -53,6 +50,8 @@ if [[ -n "${RECAP_ALLOW_INDEX:-}" ]]; then
 else
   python -m pip install --no-index "$ROOT[test]"
 fi
+
+python -c 'import pyarrow; print("PyArrow:", pyarrow.__version__)'
 
 echo "ReCAP environment: $VENV"
 echo "Installer/cache root: $CACHE_ROOT"

@@ -8,8 +8,8 @@
 set -euo pipefail
 ROOT=${1:?root required}
 VENV=${2:?venv required}
+source "$ROOT/scripts/load_modules.sh"
 source "$VENV/bin/activate"
 export RECAP_ROOT="$ROOT"
 cd "$ROOT"
 python -m src.report
-

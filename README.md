@@ -15,12 +15,13 @@ cd recap
 RECAP_ACCOUNT=def-youraccount bash scripts/submit_all.sh
 ```
 
-That command performs login-safe setup only: it creates the virtual environment at `$SCRATCH/recap_pilots_venv_py311`, puts virtualenv/pip/temp caches under `$SCRATCH/recap_pilots_cache`, generates deterministic manifests/task libraries, and downloads MNIST once into `$SCRATCH/recap_mnist`. It then submits all training, aggregation, and reporting jobs. It never trains on the login node. Keeping these high-file-count paths off `$HOME` avoids Alliance home quota failures.
+That command performs login-safe setup only: it loads the Alliance Python and Arrow modules, creates the virtual environment at `$SCRATCH/recap_pilots_venv_py311`, puts virtualenv/pip/temp caches under `$SCRATCH/recap_pilots_cache`, generates deterministic manifests/task libraries, and downloads MNIST once into `$SCRATCH/recap_mnist`. It then submits all training, aggregation, and reporting jobs. It never trains on the login node. Keeping these high-file-count paths off `$HOME` avoids Alliance home quota failures.
 
 If your Slurm association has a working default account, `RECAP_ACCOUNT` may be omitted. Useful overrides are:
 
 ```bash
 RECAP_PYTHON_MODULE=3.11 \
+RECAP_ARROW_MODULE=arrow \
 RECAP_VENV="$SCRATCH/recap_pilots_venv_py311" \
 RECAP_CACHE_ROOT="$SCRATCH/recap_pilots_cache" \
 RECAP_DATA_ROOT="$SCRATCH/recap_mnist" \
@@ -28,7 +29,7 @@ RECAP_CUDA_MODULE=cuda/12.2 \
 bash scripts/submit_all.sh
 ```
 
-`RECAP_CUDA_MODULE` is optional and should be set only if the current Narval PyTorch wheel requires a site CUDA module. Check `module spider cuda` rather than copying the example version blindly. Set `RECAP_SKIP_GPU_CALIBRATION=1` if the account cannot request GPUs.
+`RECAP_ARROW_MODULE` defaults to the site's default compatible Arrow module; override it with a version reported by `module spider arrow` only when necessary. Alliance provides PyArrow through that module and intentionally blocks wheelhouse installation without it. `RECAP_CUDA_MODULE` is optional and should be set only if the current Narval PyTorch wheel requires a site CUDA module. Check `module spider cuda` rather than copying the example version blindly. Set `RECAP_SKIP_GPU_CALIBRATION=1` if the account cannot request GPUs.
 
 ### Recovering from a home-quota failure
 

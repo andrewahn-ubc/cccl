@@ -10,6 +10,7 @@ ROOT=${1:?root required}
 VENV=${2:?venv required}
 PILOT=${3:?pilot required}
 MODE=${4:-preliminary}
+source "$ROOT/scripts/load_modules.sh"
 source "$VENV/bin/activate"
 export RECAP_ROOT="$ROOT"
 export MPLCONFIGDIR="${SLURM_TMPDIR:-/tmp}/recap_matplotlib"

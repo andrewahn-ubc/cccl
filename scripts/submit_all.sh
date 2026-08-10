@@ -18,6 +18,9 @@ if ! mkdir -p "$ROOT/logs" "$ROOT/results/pilots" "$DATA_ROOT" "$CACHE_ROOT"; th
   exit 2
 fi
 
+# Keep the Alliance Arrow/Python module environment in this shell so it is also
+# exported to submitted jobs. Each job loads it again defensively.
+source "$ROOT/scripts/load_modules.sh"
 "$ROOT/scripts/bootstrap_env.sh" "$ROOT" "$VENV"
 source "$VENV/bin/activate"
 export RECAP_ROOT="$ROOT"

@@ -10,6 +10,7 @@ ROOT=${1:?root required}
 VENV=${2:?venv required}
 DATA_ROOT=${3:?data root required}
 DEVICE=${4:?device required}
+source "$ROOT/scripts/load_modules.sh"
 if [[ "$DEVICE" == "cuda" && -n "${RECAP_CUDA_MODULE:-}" ]]; then
   module load "$RECAP_CUDA_MODULE"
 fi
