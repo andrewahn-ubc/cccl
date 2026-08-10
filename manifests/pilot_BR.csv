@@ -1,0 +1,5 @@
+batch_size,blocks,buffer_size,diagnostic,gamma,horizon,kd_beta,kd_temperature,lr,method,pilot,recycle_fraction,run_id,seed,skew_probabilities,sleep_updates,total_updates,updates_per_block,width
+64,30,500,strong_skew,0.9,10,1.0,2.0,0.001,uniform_task,BR,0.2,00bf12eedf32efab,0,"[0.4, 0.4, 0.05, 0.05, 0.05, 0.01, 0.01, 0.01, 0.01, 0.01]",30,4500,150,50
+64,30,500,strong_skew,0.9,10,1.0,2.0,0.001,uniform_task,BR,0.2,5054f1424e9c83ec,1,"[0.4, 0.4, 0.05, 0.05, 0.05, 0.01, 0.01, 0.01, 0.01, 0.01]",30,4500,150,50
+64,30,500,strong_skew,0.9,10,1.0,2.0,0.001,oracle_frequency_weighted,BR,0.2,ed4565bafdf0eb29,0,"[0.4, 0.4, 0.05, 0.05, 0.05, 0.01, 0.01, 0.01, 0.01, 0.01]",30,4500,150,50
+64,30,500,strong_skew,0.9,10,1.0,2.0,0.001,oracle_frequency_weighted,BR,0.2,87fd8baa013e5dfd,1,"[0.4, 0.4, 0.05, 0.05, 0.05, 0.01, 0.01, 0.01, 0.01, 0.01]",30,4500,150,50

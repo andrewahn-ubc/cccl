@@ -1,0 +1,12 @@
+.venv/
+.test-venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+*.py[cod]
+data/
+logs/
+results/pilots/*/*/
+results/pilots/submission.json
+manifests/libraries/*.npz

@@ -1,0 +1,3 @@
+batch_size,blocks,buffer_size,gamma,horizon,kd_beta,kd_temperature,lr,method,pilot,recycle_fraction,run_id,seed,skew_probabilities,sleep_updates,total_updates,updates_per_block,width
+64,30,500,0.9,10,1.0,2.0,0.001,score_validation,C,0.2,PENDING,0,"[0.3, 0.3, 0.1, 0.1, 0.1, 0.02, 0.02, 0.02, 0.02, 0.02]",30,4500,150,selected
+64,30,500,0.9,10,1.0,2.0,0.001,score_validation,C,0.2,PENDING,1,"[0.3, 0.3, 0.1, 0.1, 0.1, 0.02, 0.02, 0.02, 0.02, 0.02]",30,4500,150,selected

@@ -1,0 +1,2 @@
+batch_size,blocks,buffer_size,diagnostic,gamma,horizon,kd_beta,kd_temperature,lr,method,pilot,recycle_fraction,run_id,seed,skew_probabilities,sleep_updates,total_updates,updates_per_block,width
+64,30,500,width_200_feasibility,0.9,10,1.0,2.0,0.001,offline_mixture,AR,0.2,0d90d0296e30db6b,0,"[0.3, 0.3, 0.1, 0.1, 0.1, 0.02, 0.02, 0.02, 0.02, 0.02]",30,4500,150,200
