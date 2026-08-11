@@ -1,0 +1,5 @@
+{
+  "A_decision": "FAIL_OVERCAPACITY",
+  "fallback": true,
+  "selected_width": 50
+}

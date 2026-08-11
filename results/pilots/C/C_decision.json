@@ -1,0 +1,17 @@
+{
+  "decision": "FAIL",
+  "failed_run_ids": [
+    "914792891e93de5d",
+    "80e79b560a5fd58c"
+  ],
+  "gate_inputs": {
+    "reason": "Pilot C was skipped because an upstream scientific gate failed"
+  },
+  "run_ids": [],
+  "selected_importance_metric": "empirical",
+  "thresholds": {
+    "bottom_damage_ratio": 0.7,
+    "positive_both_seeds": true,
+    "spearman": 0.4
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "decision": "NO_GO",
+  "failed_run_ids": [
+    "8ea388c4f75ae8d0",
+    "b9c6c8b67d2e8daa",
+    "8832a0f20b1522cd",
+    "3070dbd6fca44a88",
+    "f79c436b8ff9d391",
+    "0b0e9cc625af22a2",
+    "247203111da874c1",
+    "b6c801ede52a0fd6",
+    "2be1d08503583ad2",
+    "c6e4f020e4a8e8ad",
+    "9ec9e1fbdbba9b0f",
+    "50e0c0ad9166cf47"
+  ],
+  "gate_inputs": {
+    "reason": "Pilot E was skipped because an upstream scientific gate failed"
+  },
+  "run_ids": [],
+  "thresholds": {
+    "oracle_minus_compute_matched": 0.02,
+    "oracle_minus_er": 0.03,
+    "oracle_minus_random": 0.02
+  }
+}

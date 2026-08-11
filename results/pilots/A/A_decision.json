@@ -1,0 +1,71 @@
+{
+  "decision": "FAIL_OVERCAPACITY",
+  "failed_run_ids": [],
+  "gate_inputs": {
+    "10": {
+      "ER": 0.76125,
+      "gap": 0.08025000000000004,
+      "offline_mixture": 0.8415,
+      "periodic_full_reset": 0.6577500000000001,
+      "seed": 0.5
+    },
+    "100": {
+      "ER": 0.91925,
+      "gap": 0.015000000000000013,
+      "offline_mixture": 0.93425,
+      "periodic_full_reset": 0.7735000000000001,
+      "seed": 0.5
+    },
+    "25": {
+      "ER": 0.86075,
+      "gap": 0.02749999999999997,
+      "offline_mixture": 0.88825,
+      "periodic_full_reset": 0.7244999999999999,
+      "seed": 0.5
+    },
+    "50": {
+      "ER": 0.888,
+      "gap": 0.02650000000000008,
+      "offline_mixture": 0.9145000000000001,
+      "periodic_full_reset": 0.7617499999999999,
+      "seed": 0.5
+    }
+  },
+  "run_ids": [
+    "e745e68757de51e3",
+    "9d3d452bd12d9966",
+    "7e33aec120205e92",
+    "7610e0171520c5cc",
+    "e4e918faaa750b5e",
+    "d694251bfb5ad778",
+    "687b36d73238d42f",
+    "bf36c12a15594d37",
+    "0c76f3a4ce2d0743",
+    "511f30bfc97709c4",
+    "6c9545a6eb0f13d4",
+    "0ffb0eba414a1927",
+    "a6733f29b5df0987",
+    "47b1e4a73cbaf23f",
+    "7706c59bb1d31768",
+    "e1c7878cb68ee63d",
+    "95df3d001f94b096",
+    "9bd569badbdc9ab7",
+    "5958c3ab779f15b8",
+    "c24315c320867d80",
+    "4a4c28ac2e899db7",
+    "c8db4d42d389769d",
+    "f78b06610218bf19",
+    "e7cda1ff53a08a71"
+  ],
+  "thresholds": {
+    "marginal": {
+      "gap": 0.05,
+      "offline": 0.85
+    },
+    "pass": {
+      "er": 0.55,
+      "offline": 0.88,
+      "offline_minus_er": 0.08
+    }
+  }
+}

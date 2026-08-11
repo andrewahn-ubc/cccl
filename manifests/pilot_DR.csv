@@ -1,7 +1,7 @@
 batch_size,blocks,buffer_size,diagnostic,gamma,horizon,kd_beta,kd_temperature,lr,method,pilot,recycle_fraction,run_id,seed,skew_probabilities,sleep_updates,total_updates,updates_per_block,width
-64,30,500,gentler_recycle_longer_sleep,0.9,10,1.0,2.0,0.001,importance_consolidate,DR,0.1,PENDING,0,"[0.3, 0.3, 0.1, 0.1, 0.1, 0.02, 0.02, 0.02, 0.02, 0.02]",100,4500,150,selected
-64,30,500,gentler_recycle_longer_sleep,0.9,10,1.0,2.0,0.001,importance_consolidate,DR,0.1,PENDING,1,"[0.3, 0.3, 0.1, 0.1, 0.1, 0.02, 0.02, 0.02, 0.02, 0.02]",100,4500,150,selected
-64,30,500,gentler_recycle_longer_sleep,0.9,10,1.0,2.0,0.001,importance_consolidate,DR,0.1,PENDING,2,"[0.3, 0.3, 0.1, 0.1, 0.1, 0.02, 0.02, 0.02, 0.02, 0.02]",100,4500,150,selected
-64,30,500,gentler_recycle_longer_sleep,0.9,10,1.0,2.0,0.001,random_consolidate,DR,0.1,PENDING,0,"[0.3, 0.3, 0.1, 0.1, 0.1, 0.02, 0.02, 0.02, 0.02, 0.02]",100,4500,150,selected
-64,30,500,gentler_recycle_longer_sleep,0.9,10,1.0,2.0,0.001,random_consolidate,DR,0.1,PENDING,1,"[0.3, 0.3, 0.1, 0.1, 0.1, 0.02, 0.02, 0.02, 0.02, 0.02]",100,4500,150,selected
-64,30,500,gentler_recycle_longer_sleep,0.9,10,1.0,2.0,0.001,random_consolidate,DR,0.1,PENDING,2,"[0.3, 0.3, 0.1, 0.1, 0.1, 0.02, 0.02, 0.02, 0.02, 0.02]",100,4500,150,selected
+64,30,500,gentler_recycle_longer_sleep,0.9,10,1.0,2.0,0.001,importance_consolidate,DR,0.1,25532db0b9e0ee4a,0,"[0.3, 0.3, 0.1, 0.1, 0.1, 0.02, 0.02, 0.02, 0.02, 0.02]",100,4500,150,50
+64,30,500,gentler_recycle_longer_sleep,0.9,10,1.0,2.0,0.001,importance_consolidate,DR,0.1,ec8c2dc806df61bc,1,"[0.3, 0.3, 0.1, 0.1, 0.1, 0.02, 0.02, 0.02, 0.02, 0.02]",100,4500,150,50
+64,30,500,gentler_recycle_longer_sleep,0.9,10,1.0,2.0,0.001,importance_consolidate,DR,0.1,255a4aa0a99a0d95,2,"[0.3, 0.3, 0.1, 0.1, 0.1, 0.02, 0.02, 0.02, 0.02, 0.02]",100,4500,150,50
+64,30,500,gentler_recycle_longer_sleep,0.9,10,1.0,2.0,0.001,random_consolidate,DR,0.1,57bf0c67cc664e82,0,"[0.3, 0.3, 0.1, 0.1, 0.1, 0.02, 0.02, 0.02, 0.02, 0.02]",100,4500,150,50
+64,30,500,gentler_recycle_longer_sleep,0.9,10,1.0,2.0,0.001,random_consolidate,DR,0.1,0f7f628686c0079f,1,"[0.3, 0.3, 0.1, 0.1, 0.1, 0.02, 0.02, 0.02, 0.02, 0.02]",100,4500,150,50
+64,30,500,gentler_recycle_longer_sleep,0.9,10,1.0,2.0,0.001,random_consolidate,DR,0.1,4128160b5aeff823,2,"[0.3, 0.3, 0.1, 0.1, 0.1, 0.02, 0.02, 0.02, 0.02, 0.02]",100,4500,150,50

@@ -1,0 +1,26 @@
+{
+  "decision": "FAIL",
+  "failed_run_ids": [
+    "72340a03c7a9acd9",
+    "481a284e018c0b15",
+    "f5a05f0aa748d61a",
+    "c92a74f991469019",
+    "ac5b6b2ba10fe6e2",
+    "19d072ba9de50913",
+    "e820c09b3ce26360",
+    "cea51073eab58419",
+    "b5195048fe62adf6",
+    "dae753a83f24ee4e",
+    "3dc63ad2f963f8d9",
+    "06e976691c321df6"
+  ],
+  "gate_inputs": {
+    "reason": "Pilot D was skipped because an upstream scientific gate failed"
+  },
+  "run_ids": [],
+  "thresholds": {
+    "importance_minus_random": 0.01,
+    "max_accuracy_drop": 0.03,
+    "recovery_ratio": 0.6
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "decision": "FAIL",
+  "failed_run_ids": [
+    "00bf12eedf32efab",
+    "5054f1424e9c83ec",
+    "ed4565bafdf0eb29",
+    "87fd8baa013e5dfd"
+  ],
+  "gate_inputs": {
+    "base_mean_paired_difference": 0.002389756944444432,
+    "base_pairs": {
+      "0": 0.001128472222222232,
+      "1": 0.004177083333333331,
+      "2": 0.004295138888888883,
+      "3": -4.166666666671759e-05
+    },
+    "base_positive_pairs": 3,
+    "strong_skew_error": "triggered retry produced no complete rows"
+  },
+  "run_ids": [
+    "4841ccb622637be6",
+    "951017962675c339",
+    "3dda8a625ba043ee",
+    "32d7b9e95a086003",
+    "0eeb005871a1377a",
+    "46a67f03e1dc21a1",
+    "b8be3acda5e9dd29",
+    "83033be9f97aa390"
+  ],
+  "thresholds": {
+    "marginal_mean_difference": 0.01,
+    "pass_mean_difference": 0.02,
+    "pass_positive_pairs": 3
+  }
+}
